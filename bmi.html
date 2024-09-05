@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter your weight" step="0.1" required>
+        
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" placeholder="Enter your height" step="0.1" required>
+        
+        <button onclick="calculateBMI()">Calculate BMI</button>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            // Get user input
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // Convert cm to meters
+
+            // Check if inputs are valid
+            if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+                alert('Please enter valid weight and height values.');
+                return;
+            }
+
+            // Calculate BMI
+            const bmi = weight / (height * height);
+
+            // Determine BMI category
+            let category = '';
+            if (bmi < 18.5) {
+                category = 'Underweight';
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                category = 'Normal weight';
+            } else if (bmi >= 25 && bmi < 29.9) {
+                category = 'Overweight';
+            } else {
+                category = 'Obesity';
+            }
+
+            // Display result
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h2>Your BMI: ${bmi.toFixed(2)}</h2>
+                <p>Category: ${category}</p>
+                <p>${getSuggestions(category)}</p>
+            `;
+        }
+
+        function getSuggestions(category) {
+            switch (category) {
+                case 'Underweight':
+                    return 'You might want to gain some weight. Consider consulting a nutritionist or a healthcare provider for personalized advice.';
+                case 'Normal weight':
+                    return 'You have a healthy weight. Maintain a balanced diet and regular exercise to stay healthy.';
+                case 'Overweight':
+                    return 'Consider adopting a healthier lifestyle with balanced nutrition and regular physical activity. Consulting a healthcare provider can be beneficial.';
+                case 'Obesity':
+                    return 'It is important to seek advice from a healthcare professional to create a plan for weight management and overall health improvement.';
+                default:
+                    return '';
+            }
+        }
+    </script>
+</body>
+</html>
